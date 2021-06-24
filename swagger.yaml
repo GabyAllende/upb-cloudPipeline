@@ -1,0 +1,143 @@
+
+openapi: 3.0.0
+
+paths:
+  /movies/{movie_id}:
+    get:
+      summary: Returns movie info
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:getMovie/invocations"
+        httpMethod: "POST"
+    put:
+      summary: Saves movie info
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                actors:
+                  type: array
+                  items: 
+                    type: string
+                year:
+                  type: string
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:putMovie/invocations"
+        httpMethod: "POST"
+
+  /roomsPerDay/movie/{movie_id}:
+    get:
+      summary: Returns movie info
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+        - name: date
+          in: query
+          schema:
+            type: string
+          description: date of movie
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:roomsPerDay/invocations"
+        httpMethod: "POST"
+        
+  /rooms/movies/{movie_id}:
+    get:
+      summary: Returns available rooms
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:getAvailableRooms/invocations"
+        httpMethod: "POST"
+
+  /rooms/{room_id}:
+    get:
+      summary: Returns available seats
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:getAvailableSeats3D/invocations"
+        httpMethod: "POST"
+
+  /rooms/{room_id}/movies/{movie_id}:
+    get:
+      summary: Returns audience
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:getAudience/invocations"
+        httpMethod: "POST"
+  /people/{person_id}:
+    get:
+      summary: Returns movies a person watched
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: movie unique id
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:getPersonMovies/invocations"
+        httpMethod: "POST"
+        
+  /people/rooms/{room_id}:
+    put:
+        summary: Saves people
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actors:
+                    type: array
+                    items: 
+                      type: string
+                  year:
+                    type: string
+        parameters:
+          - name: movie_id
+            in: path
+            required: true
+            description: movie unique id
+        x-amazon-apigateway-integration:
+          type: "aws_proxy"
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:putPeople/invocations"
+          httpMethod: "POST"
