@@ -1,0 +1,28 @@
+
+AWSTemplateFormatVersion : '2010-09-09'
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Description: Lambda CloudFormation Lab
+Resources:
+  LambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: lambda-role-3213
+        AssumeRolePolicyDocument:
+          Statement:
+            - Action:
+              - sts:AssumeRole
+              Effect: Allow
+              Principal:
+                Service:
+                - lambda.amazonaws.com
+          Version: 2012-10-17
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: 's3:PutObject'
+                  Resource: '*'
